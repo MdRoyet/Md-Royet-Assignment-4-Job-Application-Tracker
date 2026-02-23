@@ -1,0 +1,606 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Job Application Tracker</title>
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@5"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@5/themes.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      * {
+        font-family: "Geist", sans-serif;
+      }
+    </style>
+  </head>
+
+  <body class="bg-[#F8FAFC]">
+    <header id="tracker-header" class="w-[80%] mx-auto space-y-6">
+      <h1 id="main-title" class="text-4xl font-bold text-black my-10">
+        Job Application Tracker
+      </h1>
+
+      <div id="stats-container" class="grid grid-cols-3 gap-8">
+        <div
+          id="stat-total"
+          class="bg-[#FFFFFF] p-4 rounded-sm border border-gray-100 shadow-sm"
+        >
+          <p class="text-gray-500">Total</p>
+          <p id="totalCount" class="font-bold text-xl text-black">8</p>
+        </div>
+        <div
+          id="stat-interview"
+          class="bg-[#FFFFFF] p-4 rounded-sm border border-gray-100 shadow-sm"
+        >
+          <p class="text-gray-500">Interview</p>
+          <p id="interviewCount" class="text-green-500 font-bold text-xl">0</p>
+        </div>
+        <div
+          id="stat-rejected"
+          class="bg-[#FFFFFF] p-4 rounded-sm border border-gray-100 shadow-sm"
+        >
+          <p class="text-gray-500">Rejected</p>
+          <p id="rejectedCount" class="text-red-500 font-bold text-xl">0</p>
+        </div>
+      </div>
+      <hr id="header-divider" class="my-5 text-[#E6E7E9]" />
+    </header>
+
+    <main id="tracker-main" class="w-[80%] mx-auto pb-20">
+      <div id="view-header" class="flex justify-between items-center mb-6">
+        <h1 id="available-jobs-title" class="text-xl font-bold">
+          Available Jobs
+        </h1>
+        <p id="job-count-indicator" class="text-slate-500">8 jobs</p>
+      </div>
+
+      <div id="filter-section" class="flex gap-4 pb-8">
+        <button
+          id="all-filter-btn"
+          onclick="toggleStyle('all-filter-btn')"
+          class="text-gray-500 bg-[#3B82F6] text-white px-8 py-2 rounded-sm transition-colors"
+        >
+          All
+        </button>
+        <button
+          id="interview-filter-btn"
+          onclick="toggleStyle('interview-filter-btn')"
+          class="text-gray-500 shadow-sm text-black px-8 py-2 rounded-sm transition-colors"
+        >
+          Interview
+        </button>
+        <button
+          id="rejected-filter-btn"
+          onclick="toggleStyle('rejected-filter-btn')"
+          class="text-gray-500 shadow-sm text-black px-8 py-2 rounded-sm transition-colors"
+        >
+          Rejected
+        </button>
+      </div>
+
+      <section id="job-container" class="space-y-6">
+        <div
+          id="job-card-1"
+          class="bg-white rounded-xl border border-gray-200 p-8 shadow-sm relative"
+        >
+          <div class="flex justify-between items-start">
+            <div>
+              <h2 id="company-1" class="text-xl font-bold text-slate-800">
+                Pixel & Vector Studio
+              </h2>
+              <p id="role-1" class="text-slate-500 font-medium mt-1">
+                Senior Frontend Engineer (React/Next.js)
+              </p>
+            </div>
+            <button
+              id="delete-btn-1"
+              class="p-2 text-gray-400 hover:text-red-500 rounded-full border border-gray-100"
+            >
+              <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                />
+              </svg>
+            </button>
+          </div>
+          <div id="meta-1" class="flex gap-2 text-sm text-gray-400 mt-4 mb-4">
+            <span>Remote</span><span>•</span><span>Full-time</span><span>•</span
+            ><span>$140,000 - $180,000</span>
+          </div>
+          <div id="badge-container-1" class="mb-4">
+            <span
+              id="status-1"
+              class="px-3 py-1.5 bg-blue-50 text-blue-700 text-xs font-bold rounded uppercase"
+              >Not Applied</span
+            >
+          </div>
+          <p id="desc-1" class="text-gray-600 text-sm leading-relaxed mb-6">
+            Build highly interactive SaaS dashboards with a focus on animation
+            and performance.
+          </p>
+          <div id="actions-1" class="flex gap-3">
+            <button
+              id="btn-int-1"
+              class="px-4 py-2 text-xs font-bold uppercase border border-emerald-500 text-emerald-500 rounded"
+            >
+              Interview
+            </button>
+            <button
+              id="btn-rej-1"
+              class="px-4 py-2 text-xs font-bold uppercase border border-red-400 text-red-400 rounded"
+            >
+              Rejected
+            </button>
+          </div>
+        </div>
+
+        <div
+          id="job-card-2"
+          class="bg-white rounded-xl border border-gray-200 p-8 shadow-sm relative"
+        >
+          <div class="flex justify-between items-start">
+            <div>
+              <h2 id="company-2" class="text-xl font-bold text-slate-800">
+                SwiftStream Apps
+              </h2>
+              <p id="role-2" class="text-slate-500 font-medium mt-1">
+                iOS Developer (SwiftUI)
+              </p>
+            </div>
+            <button
+              id="delete-btn-2"
+              class="p-2 text-gray-400 hover:text-red-500 rounded-full border border-gray-100"
+            >
+              <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                />
+              </svg>
+            </button>
+          </div>
+          <div id="meta-2" class="flex gap-2 text-sm text-gray-400 mt-4 mb-4">
+            <span>Cupertino, CA</span><span>•</span><span>Hybrid</span
+            ><span>•</span><span>$155,000 - $195,000</span>
+          </div>
+          <div id="badge-container-2" class="mb-4">
+            <span
+              id="status-2"
+              class="px-3 py-1.5 bg-blue-50 text-blue-700 text-xs font-bold rounded uppercase"
+              >Not Applied</span
+            >
+          </div>
+          <p id="desc-2" class="text-gray-600 text-sm leading-relaxed mb-6">
+            Lead the development of a native iOS video editing suite using
+            AVFoundation.
+          </p>
+          <div id="actions-2" class="flex gap-3">
+            <button
+              id="btn-int-2"
+              class="px-4 py-2 text-xs font-bold uppercase border border-emerald-500 text-emerald-500 rounded"
+            >
+              Interview
+            </button>
+            <button
+              id="btn-rej-2"
+              class="px-4 py-2 text-xs font-bold uppercase border border-red-400 text-red-400 rounded"
+            >
+              Rejected
+            </button>
+          </div>
+        </div>
+
+        <div
+          id="job-card-3"
+          class="bg-white rounded-xl border border-gray-200 p-8 shadow-sm relative"
+        >
+          <div class="flex justify-between items-start">
+            <div>
+              <h2 id="company-3" class="text-xl font-bold text-slate-800">
+                Nebula Interactive
+              </h2>
+              <p id="role-3" class="text-slate-500 font-medium mt-1">
+                Gameplay Programmer (C++/Unreal)
+              </p>
+            </div>
+            <button
+              id="delete-btn-3"
+              class="p-2 text-gray-400 hover:text-red-500 rounded-full border border-gray-100"
+            >
+              <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                />
+              </svg>
+            </button>
+          </div>
+          <div id="meta-3" class="flex gap-2 text-sm text-gray-400 mt-4 mb-4">
+            <span>Austin, TX</span><span>•</span><span>On-site</span
+            ><span>•</span><span>$110k - $145k</span>
+          </div>
+          <div id="badge-container-3" class="mb-4">
+            <span
+              id="status-3"
+              class="px-3 py-1.5 bg-blue-50 text-blue-700 text-xs font-bold rounded uppercase"
+              >Not Applied</span
+            >
+          </div>
+          <p id="desc-3" class="text-gray-600 text-sm leading-relaxed mb-6">
+            Implement core combat mechanics and AI behavior for a AAA open-world
+            RPG.
+          </p>
+          <div id="actions-3" class="flex gap-3">
+            <button
+              id="btn-int-3"
+              class="px-4 py-2 text-xs font-bold uppercase border border-emerald-500 text-emerald-500 rounded"
+            >
+              Interview
+            </button>
+            <button
+              id="btn-rej-3"
+              class="px-4 py-2 text-xs font-bold uppercase border border-red-400 text-red-400 rounded"
+            >
+              Rejected
+            </button>
+          </div>
+        </div>
+
+        <div
+          id="job-card-4"
+          class="bg-white rounded-xl border border-gray-200 p-8 shadow-sm relative"
+        >
+          <div class="flex justify-between items-start">
+            <div>
+              <h2 id="company-4" class="text-xl font-bold text-slate-800">
+                CoreLogic Systems
+              </h2>
+              <p id="role-4" class="text-slate-500 font-medium mt-1">
+                Systems Engineer (Rust/Go)
+              </p>
+            </div>
+            <button
+              id="delete-btn-4"
+              class="p-2 text-gray-400 hover:text-red-500 rounded-full border border-gray-100"
+            >
+              <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                />
+              </svg>
+            </button>
+          </div>
+          <div id="meta-4" class="flex gap-2 text-sm text-gray-400 mt-4 mb-4">
+            <span>Remote</span><span>•</span><span>Full-time</span><span>•</span
+            ><span>€95k - €130k</span>
+          </div>
+          <div id="badge-container-4" class="mb-4">
+            <span
+              id="status-4"
+              class="px-3 py-1.5 bg-blue-50 text-blue-700 text-xs font-bold rounded uppercase"
+              >Not Applied</span
+            >
+          </div>
+          <p id="desc-4" class="text-gray-600 text-sm leading-relaxed mb-6">
+            Develop high-throughput ingestion pipelines and database storage
+            engines.
+          </p>
+          <div id="actions-4" class="flex gap-3">
+            <button
+              id="btn-int-4"
+              class="px-4 py-2 text-xs font-bold uppercase border border-emerald-500 text-emerald-500 rounded"
+            >
+              Interview
+            </button>
+            <button
+              id="btn-rej-4"
+              class="px-4 py-2 text-xs font-bold uppercase border border-red-400 text-red-400 rounded"
+            >
+              Rejected
+            </button>
+          </div>
+        </div>
+
+        <div
+          id="job-card-5"
+          class="bg-white rounded-xl border border-gray-200 p-8 shadow-sm relative"
+        >
+          <div class="flex justify-between items-start">
+            <div>
+              <h2 id="company-5" class="text-xl font-bold text-slate-800">
+                Infinite Scale Cloud
+              </h2>
+              <p id="role-5" class="text-slate-500 font-medium mt-1">
+                Platform Engineer (K8s)
+              </p>
+            </div>
+            <button
+              id="delete-btn-5"
+              class="p-2 text-gray-400 hover:text-red-500 rounded-full border border-gray-100"
+            >
+              <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                />
+              </svg>
+            </button>
+          </div>
+          <div id="meta-5" class="flex gap-2 text-sm text-gray-400 mt-4 mb-4">
+            <span>Seattle, WA</span><span>•</span><span>Remote</span
+            ><span>•</span><span>$165k - $210k</span>
+          </div>
+          <div id="badge-container-5" class="mb-4">
+            <span
+              id="status-5"
+              class="px-3 py-1.5 bg-blue-50 text-blue-700 text-xs font-bold rounded uppercase"
+              >Not Applied</span
+            >
+          </div>
+          <p id="desc-5" class="text-gray-600 text-sm leading-relaxed mb-6">
+            Manage multi-region K8s clusters and automate cloud infrastructure
+            provisioning.
+          </p>
+          <div id="actions-5" class="flex gap-3">
+            <button
+              id="btn-int-5"
+              class="px-4 py-2 text-xs font-bold uppercase border border-emerald-500 text-emerald-500 rounded"
+            >
+              Interview
+            </button>
+            <button
+              id="btn-rej-5"
+              class="px-4 py-2 text-xs font-bold uppercase border border-red-400 text-red-400 rounded"
+            >
+              Rejected
+            </button>
+          </div>
+        </div>
+
+        <div
+          id="job-card-6"
+          class="bg-white rounded-xl border border-gray-200 p-8 shadow-sm relative"
+        >
+          <div class="flex justify-between items-start">
+            <div>
+              <h2 id="company-6" class="text-xl font-bold text-slate-800">
+                EtherNode Protocol
+              </h2>
+              <p id="role-6" class="text-slate-500 font-medium mt-1">
+                Smart Contract Developer
+              </p>
+            </div>
+            <button
+              id="delete-btn-6"
+              class="p-2 text-gray-400 hover:text-red-500 rounded-full border border-gray-100"
+            >
+              <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                />
+              </svg>
+            </button>
+          </div>
+          <div id="meta-6" class="flex gap-2 text-sm text-gray-400 mt-4 mb-4">
+            <span>Global Remote</span><span>•</span><span>Contract</span
+            ><span>•</span><span>$150/hr</span>
+          </div>
+          <div id="badge-container-6" class="mb-4">
+            <span
+              id="status-6"
+              class="px-3 py-1.5 bg-blue-50 text-blue-700 text-xs font-bold rounded uppercase"
+              >Not Applied</span
+            >
+          </div>
+          <p id="desc-6" class="text-gray-600 text-sm leading-relaxed mb-6">
+            Audit and deploy secure Solidity contracts for DeFi lending
+            protocols.
+          </p>
+          <div id="actions-6" class="flex gap-3">
+            <button
+              id="btn-int-6"
+              class="px-4 py-2 text-xs font-bold uppercase border border-emerald-500 text-emerald-500 rounded"
+            >
+              Interview
+            </button>
+            <button
+              id="btn-rej-6"
+              class="px-4 py-2 text-xs font-bold uppercase border border-red-400 text-red-400 rounded"
+            >
+              Rejected
+            </button>
+          </div>
+        </div>
+
+        <div
+          id="job-card-7"
+          class="bg-white rounded-xl border border-gray-200 p-8 shadow-sm relative"
+        >
+          <div class="flex justify-between items-start">
+            <div>
+              <h2 id="company-7" class="text-xl font-bold text-slate-800">
+                DataPulse Analytics
+              </h2>
+              <p id="role-7" class="text-slate-500 font-medium mt-1">
+                Data Engineer (PySpark)
+              </p>
+            </div>
+            <button
+              id="delete-btn-7"
+              class="p-2 text-gray-400 hover:text-red-500 rounded-full border border-gray-100"
+            >
+              <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                />
+              </svg>
+            </button>
+          </div>
+          <div id="meta-7" class="flex gap-2 text-sm text-gray-400 mt-4 mb-4">
+            <span>Chicago, IL</span><span>•</span><span>Hybrid</span
+            ><span>•</span><span>$135k - $170k</span>
+          </div>
+          <div id="badge-container-7" class="mb-4">
+            <span
+              id="status-7"
+              class="px-3 py-1.5 bg-blue-50 text-blue-700 text-xs font-bold rounded uppercase"
+              >Not Applied</span
+            >
+          </div>
+          <p id="desc-7" class="text-gray-600 text-sm leading-relaxed mb-6">
+            Architect ETL pipelines for large-scale warehouses using Snowflake
+            integration.
+          </p>
+          <div id="actions-7" class="flex gap-3">
+            <button
+              id="btn-int-7"
+              class="px-4 py-2 text-xs font-bold uppercase border border-emerald-500 text-emerald-500 rounded"
+            >
+              Interview
+            </button>
+            <button
+              id="btn-rej-7"
+              class="px-4 py-2 text-xs font-bold uppercase border border-red-400 text-red-400 rounded"
+            >
+              Rejected
+            </button>
+          </div>
+        </div>
+
+        <div
+          id="job-card-8"
+          class="bg-white rounded-xl border border-gray-200 p-8 shadow-sm relative"
+        >
+          <div class="flex justify-between items-start">
+            <div>
+              <h2 id="company-8" class="text-xl font-bold text-slate-800">
+                NeuralNexus AI
+              </h2>
+              <p id="role-8" class="text-slate-500 font-medium mt-1">
+                MLOps Engineer
+              </p>
+            </div>
+            <button
+              id="delete-btn-8"
+              class="p-2 text-gray-400 hover:text-red-500 rounded-full border border-gray-100"
+            >
+              <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                />
+              </svg>
+            </button>
+          </div>
+          <div id="meta-8" class="flex gap-2 text-sm text-gray-400 mt-4 mb-4">
+            <span>San Francisco, CA</span><span>•</span><span>Full-time</span
+            ><span>•</span><span>$180k - $230k</span>
+          </div>
+          <div id="badge-container-8" class="mb-4">
+            <span
+              id="status-8"
+              class="px-3 py-1.5 bg-blue-50 text-blue-700 text-xs font-bold rounded uppercase"
+              >Not Applied</span
+            >
+          </div>
+          <p id="desc-8" class="text-gray-600 text-sm leading-relaxed mb-6">
+            Deploy and monitor LLMs in production using LangChain and GPU
+            orchestration.
+          </p>
+          <div id="actions-8" class="flex gap-3">
+            <button
+              id="btn-int-8"
+              class="px-4 py-2 text-xs font-bold uppercase border border-emerald-500 text-emerald-500 rounded"
+            >
+              Interview
+            </button>
+            <button
+              id="btn-rej-8"
+              class="px-4 py-2 text-xs font-bold uppercase border border-red-400 text-red-400 rounded"
+            >
+              Rejected
+            </button>
+          </div>
+        </div>
+      </section>
+    </main>
+    <script src="./script.js"></script>
+  </body>
+</html>
