@@ -8,9 +8,8 @@ let interviewCount = document.getElementById("interviewCount");
 let rejectedCount = document.getElementById("rejectedCount");
 
 const allCardSection = document.getElementById("job-container");
-
 const mainContainer = document.querySelector("main");
-console.log(mainContainer);
+const filterSection = document.getElementById("filtered-card-information");
 
 function calculateCount() {
   total.innerText = allCardSection.children.length;
@@ -40,6 +39,18 @@ function toggleStyle(id) {
   const activeBtn = document.getElementById(id);
   activeBtn.classList.remove("bg-white", "text-black");
   activeBtn.classList.add("bg-[#3B82F6]", "text-white");
+
+  if (id == "interview-filter-btn") {
+    allCardSection.classList.add("hidden");
+    filterSection.classList.remove("hidden");
+
+    if (interviewList.length === 0) {
+      emptyPage.classList.remove("hidden");
+    } else {
+      emptyPage.classList.add("hidden");
+      renderInterview();
+    }
+  }
 }
 
 //No Jobs Available section >>>>>>
@@ -72,7 +83,7 @@ emptyPage.innerHTML = `
     </p>
 `;
 
-jobContainer.parentElement.appendChild(emptyPage);
+filterSection.appendChild(emptyPage);
 
 // Show all jobs
 allBtn.addEventListener("click", function () {
@@ -91,3 +102,73 @@ rejectedBtn.addEventListener("click", function () {
   jobContainer.classList.add("hidden");
   emptyPage.classList.remove("hidden");
 });
+
+// Main Container Section
+
+mainContainer.addEventListener("click", function (event) {
+  if (event.target.id.startsWith("btn-int-")) {
+    const card = event.target.closest("[id^='job-card-']");
+    const idNumber = event.target.id.split("-")[2];
+
+    const companyName = card.querySelector(`#company-${idNumber}`).innerText;
+    const roleName = card.querySelector(`#role-${idNumber}`).innerText;
+    const metaDetails = card.querySelector(`#meta-${idNumber}`).innerText;
+    const jobDescription = card.querySelector(`#desc-${idNumber}`).innerText;
+
+    const cardInfo = {
+      id: idNumber,
+      companyName,
+      roleName,
+      metaDetails,
+      jobDescription,
+    };
+
+    const companyExist = interviewList.find((item) => item.id === idNumber);
+
+    card.querySelector(`#status-${idNumber}`).innerText = "Interviewed";
+
+    if (!companyExist) {
+      interviewList.push(cardInfo);
+    }
+
+    calculateCount();
+    renderInterview();
+  }
+});
+
+function renderInterview() {
+  filterSection.innerHTML = "";
+
+  if (interviewList.length === 0) {
+    emptyPage.classList.remove("hidden");
+    return;
+  }
+
+  emptyPage.classList.add("hidden");
+
+  interviewList.forEach((interview) => {
+    let div = document.createElement("div");
+
+    div.innerHTML = `
+      <div class="bg-white rounded-xl border border-gray-200 p-8 shadow-sm relative">
+        <h2 class="text-xl font-bold text-slate-800">
+          ${interview.companyName}
+        </h2>
+        <p class="text-slate-500 font-medium mt-1">
+          ${interview.roleName}
+        </p>
+        <div class="flex gap-2 text-sm text-gray-400 mt-4 mb-4">
+          ${interview.metaDetails}
+        </div>
+        <p class="text-gray-600 text-sm leading-relaxed mb-6">
+          ${interview.jobDescription}
+        </p>
+        <span class="px-3 py-1.5 bg-green-50 text-green-700 text-xs font-bold rounded uppercase">
+          Interviewed
+        </span>
+      </div>
+    `;
+
+    filterSection.appendChild(div);
+  });
+}
