@@ -20,6 +20,28 @@ function calculateCount() {
 
 calculateCount();
 
+// Toggling Button Style Section >>>>>>>>>>>>
+
+const allFilterBtn = document.getElementById("all-filter-btn");
+const interviewFilterBtn = document.getElementById("interview-filter-btn");
+const rejectedFilterBtn = document.getElementById("rejected-filter-btn");
+
+function toggleStyle(id) {
+  // Reset all buttons to white
+  allFilterBtn.classList.remove("bg-[#3B82F6]", "text-white");
+  interviewFilterBtn.classList.remove("bg-[#3B82F6]", "text-white");
+  rejectedFilterBtn.classList.remove("bg-[#3B82F6]", "text-white");
+
+  allFilterBtn.classList.add("bg-white", "text-black");
+  interviewFilterBtn.classList.add("bg-white", "text-black");
+  rejectedFilterBtn.classList.add("bg-white", "text-black");
+
+  // Make clicked button active (blue)
+  const activeBtn = document.getElementById(id);
+  activeBtn.classList.remove("bg-white", "text-black");
+  activeBtn.classList.add("bg-[#3B82F6]", "text-white");
+}
+
 //No Jobs Available section >>>>>>
 
 const allBtn = document.getElementById("all-filter-btn");
