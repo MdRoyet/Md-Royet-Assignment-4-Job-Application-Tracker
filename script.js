@@ -6,6 +6,7 @@ let rejectedList = [];
 let total = document.getElementById("totalCount");
 let interviewCount = document.getElementById("interviewCount");
 let rejectedCount = document.getElementById("rejectedCount");
+let jobCountIndicator = document.getElementById("job-count-indicator");
 
 const allCardSection = document.getElementById("job-container");
 const filterSection = document.getElementById("filtered-card-information");
@@ -13,7 +14,7 @@ const allFilterBtn = document.getElementById("all-filter-btn");
 const interviewFilterBtn = document.getElementById("interview-filter-btn");
 const rejectedFilterBtn = document.getElementById("rejected-filter-btn");
 
-// No Jobs Page Setup (Created once and appended)
+// No Jobs Page Setup
 const emptyPage = document.createElement("div");
 emptyPage.className =
   "hidden flex flex-col items-center justify-center py-24 text-center bg-white rounded-xl border border-gray-200 p-8 shadow-sm";
@@ -25,12 +26,21 @@ filterSection.after(emptyPage);
 
 // Calculate Counts
 function calculateCount() {
-  total.innerText = allCardSection.children.length;
+  // Get the current number of cards inside the main job container
+  const currentTotal = allCardSection.children.length;
+
+  // Update the top stats boxes
+  total.innerText = currentTotal;
   interviewCount.innerText = interviewList.length;
   rejectedCount.innerText = rejectedList.length;
+
+  // Update the "X jobs" indicator above the filters (The fix for your screenshot)
+  if (jobCountIndicator) {
+    jobCountIndicator.innerText = `${currentTotal} jobs`;
+  }
 }
 
-// Tab Styling and Section Toggling
+// Tab Styling and Visibility
 function toggleStyle(id) {
   [allFilterBtn, interviewFilterBtn, rejectedFilterBtn].forEach((btn) => {
     btn.classList.remove("bg-[#3B82F6]", "text-white");
@@ -41,7 +51,6 @@ function toggleStyle(id) {
   activeBtn.classList.replace("bg-white", "bg-[#3B82F6]");
   activeBtn.classList.replace("text-black", "text-white");
 
-  // Show/Hide Sections logic
   if (id === "all-filter-btn") {
     allCardSection.classList.remove("hidden");
     filterSection.classList.add("hidden");
@@ -55,7 +64,7 @@ function toggleStyle(id) {
   }
 }
 
-// Render Functions with Conditional "Empty State" Logic
+// Render Functions (Conditional Logic for Empty State)
 function renderInterview() {
   filterSection.innerHTML = "";
   if (interviewList.length === 0) {
@@ -103,9 +112,7 @@ function createFilterCard(item, status, color) {
       <div class="flex gap-2 text-sm text-gray-400 mt-4 mb-4">${item.metaDetails}</div>
       <p class="text-gray-600 text-sm leading-relaxed mb-6">${item.jobDescription}</p>
       <div class="flex justify-between items-center">
-        <span class="px-3 py-1.5 bg-${color}-50 text-${color}-700 text-xs font-bold rounded uppercase">
-          ${status}
-        </span>
+        <span class="px-3 py-1.5 bg-${color}-50 text-${color}-700 text-xs font-bold rounded uppercase">${status}</span>
         <div class="flex gap-2">
            <button id="btn-int-${item.id}" class="px-4 py-1.5 border border-green-500 text-green-600 rounded-lg hover:bg-green-50 transition-colors text-sm font-medium">Interview</button>
            <button id="btn-rej-${item.id}" class="px-4 py-1.5 border border-red-500 text-red-600 rounded-lg hover:bg-red-50 transition-colors text-sm font-medium">Rejected</button>
@@ -115,16 +122,14 @@ function createFilterCard(item, status, color) {
   filterSection.appendChild(div);
 }
 
-// Centralized Click Handler
+// Consolidated Click Handler
 document.addEventListener("click", function (event) {
   const target = event.target.closest("button");
   if (!target) return;
 
-  // 1. Handle Interview/Rejected status changes
+  // 1. Move/Add to Lists (Interview or Rejected)
   if (target.id.startsWith("btn-int-") || target.id.startsWith("btn-rej-")) {
     const idNumber = target.id.split("-")[2];
-
-    // Find data: Check lists first, then DOM if not found
     const sourceList = [...interviewList, ...rejectedList];
     let cardInfo = sourceList.find((item) => item.id === idNumber);
 
@@ -140,37 +145,54 @@ document.addEventListener("click", function (event) {
     }
 
     if (target.id.startsWith("btn-int-")) {
-      // Add to Interview, Remove from Rejected
       if (!interviewList.find((item) => item.id === idNumber))
         interviewList.push(cardInfo);
       rejectedList = rejectedList.filter((item) => item.id !== idNumber);
-
       const mainStatus = document.querySelector(`#status-${idNumber}`);
       if (mainStatus) mainStatus.innerText = "Interviewed";
-    } else if (target.id.startsWith("btn-rej-")) {
-      // Add to Rejected, Remove from Interview
+    } else {
       if (!rejectedList.find((item) => item.id === idNumber))
         rejectedList.push(cardInfo);
       interviewList = interviewList.filter((item) => item.id !== idNumber);
-
       const mainStatus = document.querySelector(`#status-${idNumber}`);
       if (mainStatus) mainStatus.innerText = "Rejected";
     }
 
-    // After moving, re-render the current view to apply "hidden" logic if empty
+    // Refresh active toggle view
     if (interviewFilterBtn.classList.contains("bg-[#3B82F6]"))
       renderInterview();
     if (rejectedFilterBtn.classList.contains("bg-[#3B82F6]")) renderRejected();
+    calculateCount();
+  }
+
+  // 2. DELETE FROM "ALL" BUTTON (Permanent)
+  if (target.id.startsWith("delete-btn-")) {
+    const idNumber = target.id.split("-")[2];
+
+    // Remove the card element from the main DOM
+    const card = document.getElementById(`job-card-${idNumber}`);
+    if (card) card.remove();
+
+    // Also remove from categorized lists so counts update
+    interviewList = interviewList.filter((i) => i.id !== idNumber);
+    rejectedList = rejectedList.filter((r) => r.id !== idNumber);
 
     calculateCount();
   }
 
-  // 2. Handle Delete from Filtered View
+  // 3. DELETE FROM INTERVIEWED/REJECTED BUTTON (Move back to "All" Pool)
   if (target.id.startsWith("del-filter-")) {
     const idNumber = target.id.split("-")[2];
+
+    // Remove from the filtered lists
     interviewList = interviewList.filter((i) => i.id !== idNumber);
     rejectedList = rejectedList.filter((r) => r.id !== idNumber);
 
+    // Reset status label in the "All" section
+    const mainStatus = document.querySelector(`#status-${idNumber}`);
+    if (mainStatus) mainStatus.innerText = "Applied";
+
+    // Re-render toggle to show remaining or "No jobs available"
     if (interviewFilterBtn.classList.contains("bg-[#3B82F6]"))
       renderInterview();
     if (rejectedFilterBtn.classList.contains("bg-[#3B82F6]")) renderRejected();
@@ -179,5 +201,4 @@ document.addEventListener("click", function (event) {
   }
 });
 
-// Initial Load
 calculateCount();
