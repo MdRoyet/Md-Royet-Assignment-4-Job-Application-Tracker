@@ -59,11 +59,12 @@ filterSection.after(emptyPage);
 
 // Handle Clicks (Interview/Rejected buttons)
 document.addEventListener("click", function (event) {
-  if (
-    event.target.id.startsWith("btn-int-") ||
-    event.target.id.startsWith("btn-rej-")
-  ) {
-    const idNumber = event.target.id.split("-")[2];
+  const target = event.target.closest("button");
+  if (!target) return;
+
+  // Interviewed and Rejected button logic
+  if (target.id.startsWith("btn-int-") || target.id.startsWith("btn-rej-")) {
+    const idNumber = target.id.split("-")[2];
     const card = document.getElementById(`job-card-${idNumber}`);
 
     const cardInfo = {
@@ -74,13 +75,23 @@ document.addEventListener("click", function (event) {
       jobDescription: card.querySelector(`#desc-${idNumber}`).innerText,
     };
 
-    if (event.target.id.startsWith("btn-int-")) {
-      if (!interviewList.find((item) => item.id === idNumber))
+    if (target.id.startsWith("btn-int-")) {
+      // 1. Add to Interview list if not already there
+      if (!interviewList.find((item) => item.id === idNumber)) {
         interviewList.push(cardInfo);
+      }
+      // 2. REMOVE from Rejected list (the fix)
+      rejectedList = rejectedList.filter((item) => item.id !== idNumber);
+
       card.querySelector(`#status-${idNumber}`).innerText = "Interviewed";
-    } else {
-      if (!rejectedList.find((item) => item.id === idNumber))
+    } else if (target.id.startsWith("btn-rej-")) {
+      // 1. Add to Rejected list if not already there
+      if (!rejectedList.find((item) => item.id === idNumber)) {
         rejectedList.push(cardInfo);
+      }
+      // 2. REMOVE from Interview list (the fix)
+      interviewList = interviewList.filter((item) => item.id !== idNumber);
+
       card.querySelector(`#status-${idNumber}`).innerText = "Rejected";
     }
 
@@ -111,7 +122,7 @@ function renderRejected() {
   }
 }
 
-// Helper to build the HTML for filtered cards
+// filtered cards Making >>>>>
 function createFilterCard(item, status, color) {
   let div = document.createElement("div");
   div.className =
